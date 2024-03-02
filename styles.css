@@ -1,0 +1,144 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .pizza-input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pizza-input-container label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pizza Value Calculator</h1>
+        <div id="pizzas">
+            <div class="pizza-input-container">
+                <div>
+                    <label for="diameter7">7-inch pizza:</label>
+                    <input type="number" id="diameter7" value="7">
+                </div>
+                <div>
+                    <label for="price7">Price (£):</label>
+                    <input type="number" id="price7" value="4">
+                </div>
+            </div>
+            <div class="pizza-input-container">
+                <div>
+                    <label for="diameter9">9-inch pizza:</label>
+                    <input type="number" id="diameter9" value="9">
+                </div>
+                <div>
+                    <label for="price9">Price (£):</label>
+                    <input type="number" id="price9" value="6">
+                </div>
+            </div>
+            <div class="pizza-input-container">
+                <div>
+                    <label for="diameter12">12-inch pizza:</label>
+                    <input type="number" id="diameter12" value="12">
+                </div>
+                <div>
+                    <label for="price12">Price (£):</label>
+                    <input type="number" id="price12" value="10">
+                </div>
+            </div>
+            <div class="pizza-input-container">
+                <div>
+                    <label for="diameter15">15-inch pizza:</label>
+                    <input type="number" id="diameter15" value="15">
+                </div>
+                <div>
+                    <label for="price15">Price (£):</label>
+                    <input type="number" id="price15" value="12">
+                </div>
+            </div>
+        </div>
+        <button onclick="calculateBestValue()">Calculate Best Value</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateCostPerSquareInch(diameter, price) {
+            const radius = diameter / 2;
+            const area = Math.PI * radius * radius;
+            return price / area;
+        }
+
+        function calculateBestValue() {
+            const pizzas = [
+                { diameter: parseInt(document.getElementById('diameter7').value), price: parseInt(document.getElementById('price7').value) },
+                { diameter: parseInt(document.getElementById('diameter9').value), price: parseInt(document.getElementById('price9').value) },
+                { diameter: parseInt(document.getElementById('diameter12').value), price: parseInt(document.getElementById('price12').value) },
+                { diameter: parseInt(document.getElementById('diameter15').value), price: parseInt(document.getElementById('price15').value) }
+            ];
+
+            let bestValuePizza = pizzas[0];
+            let bestValue = calculateCostPerSquareInch(pizzas[0].diameter, pizzas[0].price);
+
+            for (let i = 1; i < pizzas.length; i++) {
+                const costPerSquareInch = calculateCostPerSquareInch(pizzas[i].diameter, pizzas[i].price);
+                if (costPerSquareInch < bestValue) {
+                    bestValue = costPerSquareInch;
+                    bestValuePizza = pizzas[i];
+                }
+            }
+
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `The best value for money is the ${bestValuePizza.diameter}-inch pizza costing £${bestValuePizza.price}`;
+        }
+
